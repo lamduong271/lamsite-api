@@ -38,6 +38,16 @@ export class ExperienceResolver {
     return Experience.find();
   }
 
+  @Query(() => Experience)
+  async getExperienceById(
+    @Arg("id") id: string,
+  ): Promise<Experience> {
+    const experience = await Experience.findOne({where: {id}})
+    if(!experience) throw new Error("experience not found!");
+    return experience
+  }
+
+
   @Mutation(() => Experience)
   async createExperience(
     @Arg("inputExperience", () => ExperienceInputType)
@@ -58,5 +68,15 @@ export class ExperienceResolver {
     Object.assign(experience, experienceInputUpdate)
     await experience.save()
     return experience
+  }
+
+  @Mutation(() => Boolean)
+  async deleteExperience(
+    @Arg("id") id: string,
+  ): Promise<boolean> {
+    const experience = await Experience.findOne({where: {id}})
+    if(!experience) throw new Error("experience not found!");
+    await experience.remove()
+    return  true;
   }
 }

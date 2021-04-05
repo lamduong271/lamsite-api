@@ -16,6 +16,21 @@ class ExperienceInputType {
   duration: string;
 }
 
+@InputType()
+class ExperienceInputUpdate {
+  @Field({nullable: true})
+  company?: string;
+
+  @Field({nullable: true})
+  title?: string;
+
+  @Field({nullable: true})
+  location?: string;
+
+  @Field({nullable: true})
+  duration?: string;
+}
+
 @Resolver()
 export class ExperienceResolver {
   @Query(() => [Experience])
@@ -31,5 +46,17 @@ export class ExperienceResolver {
     return Experience.create({
       ...inputExperience
     }).save()
+  }
+
+  @Mutation(() => Experience)
+  async updateExperience(
+    @Arg("id") id: string,
+    @Arg("experienceInputUpdate") experienceInputUpdate: ExperienceInputUpdate
+  ): Promise<Experience> {
+    const experience = await Experience.findOne({where: {id}})
+    if(!experience) throw new Error("experience not found!");
+    Object.assign(experience, experienceInputUpdate)
+    await experience.save()
+    return experience
   }
 }

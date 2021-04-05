@@ -4,7 +4,6 @@ import { ApolloServer, gql } from 'apollo-server-express'
 import { createConnection, getRepository } from "typeorm"
 import {Experience} from './entities/Experiences'
 import { buildSchema } from "type-graphql"
-import { HelloWorldResolver } from './resolvers/Hello'
 import { ExperienceResolver } from './resolvers/Experience'
 
 dotenv.config()
@@ -24,7 +23,7 @@ const main = async () => {
 
   const server = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloWorldResolver, ExperienceResolver],
+      resolvers: [ExperienceResolver],
       validate: false
     })
   });

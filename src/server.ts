@@ -1,10 +1,12 @@
 import dotenv from 'dotenv'
 import express from 'express'
-import { ApolloServer, gql } from 'apollo-server-express'
-import { createConnection, getRepository } from "typeorm"
+import { ApolloServer } from 'apollo-server-express'
+import { createConnection } from "typeorm"
 import {Experience} from './entities/Experiences'
 import { buildSchema } from "type-graphql"
-import { ExperienceResolver } from './resolvers/Experience'
+import { ExperienceResolver } from './resolvers/ExperienceResolver'
+import { Education } from './entities/Education'
+import { EducationResolver } from './resolvers/EducationResolver'
 
 dotenv.config()
 
@@ -18,12 +20,12 @@ const main = async () => {
     database: process.env.DATABASE_NAME,
     synchronize: true,
     logging: true,
-    entities: [Experience]
+    entities: [Experience, Education]
   });
 
   const server = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [ExperienceResolver],
+      resolvers: [ExperienceResolver, EducationResolver],
       validate: false
     })
   });

@@ -26,7 +26,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon",
+    "start": "nodemon ./src/server.ts",
+    "prod": "NODE_ENV=production ts-node ./src/server.ts",
     "dev": "node --exec babel-node src/server.js",
     "watch": "tsc -w"
   },
